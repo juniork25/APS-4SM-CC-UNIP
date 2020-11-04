@@ -1,0 +1,92 @@
+package Conexao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+
+public class ConexaoBD {
+    private String url;
+    private String user;
+    private String pass;
+    private Connection con;
+    
+ConexaoBD(){
+     url = "jdbc:postgresql://localhost:5432/Amazonia";
+     user = "postgres";
+     pass= "postgresql4321";
+ 
+    try{
+    Class.forName("org.postgresql.Driver");
+    con = DriverManager.getConnection(url,user,pass);
+        System.out.println("Conexao Realizada com sucesso.");
+            
+    } catch (Exception e){
+        e.printStackTrace();
+    }
+} 
+
+public int executaSQL(String sql){
+    
+    try {
+        
+        Statement stm = con.createStatement();
+        int res = stm.executeUpdate(sql);
+        con.close();
+        return res;
+        
+    } catch(Exception e){
+        e.printStackTrace();
+        return 0;
+    }
+}
+
+public ResultSet executaBusca( String sql ){
+    try{
+        
+        Statement stm = con.createStatement();
+        ResultSet rs = stm.executeQuery(sql);
+        con.close();
+        return rs;
+        
+    } catch (Exception e){
+        e.printStackTrace();
+        return null;
+    }
+}
+
+public int modificarSQL(String sql){
+    
+    try {
+        
+        Statement stm = con.createStatement();
+        int mod = stm.executeUpdate(sql);
+        con.close();
+        return mod;
+        
+    } catch(Exception e){
+        e.printStackTrace();
+        return 0;
+    }
+
+}
+
+public int deletarSQL(String sql){
+    
+    try {
+        
+        Statement stm = con.createStatement();
+        int del = stm.executeUpdate(sql);
+        con.close();
+        return del;
+        
+    } catch(Exception e){
+        e.printStackTrace();
+        return 0;
+    }
+
+}
+
+
+}
