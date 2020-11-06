@@ -1,0 +1,18 @@
+package Conexao;
+
+public class DeletarTeste {
+
+    public static void main(String[] args) {
+        ConexaoBD con = new ConexaoBD();
+        String sql = "DELETE FROM authors WHERE author_id = 1";
+                     
+        int res = con.executaSQL(sql);
+        if(res > 0){
+            System.out.println("Deletado com Sucesso!");
+        }else{
+            System.out.println("Erro durante a deleçao.");
+        }
+    
+    }
+    
+}
