@@ -1,0 +1,18 @@
+package Conexao;
+
+
+public class ModificarTeste {
+
+    public static void main(String[] args) {
+        ConexaoBD con = new ConexaoBD();
+        String sql = "UPDATE authors SET name = 'Dafine'" +
+                "WHERE name = 'Clarice'";
+                
+        int mod = con.modificarSQL(sql);
+        if(mod > 0){
+            System.out.println("Modificado com Sucesso!");
+        }else{
+            System.out.println("Erro durante modificação.");
+        }
+    }
+    }
