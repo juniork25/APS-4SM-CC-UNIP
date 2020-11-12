@@ -20,7 +20,7 @@ public class BDAuthors {
     
     public void adicionaAutor(Authors a)  throws SQLException{
     
-    String sql = "INSERT INTO Authors(default, name, fname)"+
+    String sql = "INSERT INTO Authors(authors_id, name, fname)"+
                 "VALUES (default, ?, ? )";
     
     PreparedStatement stmt;
