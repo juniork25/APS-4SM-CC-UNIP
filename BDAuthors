@@ -1,0 +1,173 @@
+package Conexao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Authors;
+
+
+public class BDAuthors {
+    
+    private Connection con;
+    
+    // Estabelece uma conexão
+    public BDAuthors() throws SQLException {       
+        this.con = ConexaoBD.getConexao();
+    }
+    
+    public void adicionaAutor(Authors a)  throws SQLException{
+    
+    String sql = "INSERT INTO Authors(default, name, fname)"+
+                "VALUES (default, ?, ? )";
+    
+    PreparedStatement stmt;
+     
+        
+    stmt = this.con.prepareStatement(sql);
+    
+        stmt.setString(1, String.valueOf(a.getAuthor_id()));
+        stmt.setString(2, a.getName());
+        stmt.setString(3, a.getFname());
+        stmt.execute();
+        stmt.close();
+        
+        
+   
+}
+
+    public List<Authors> getListaPorId(String authors_id) throws SQLException{
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "SELECT * FROM Authors WHERE autors_id = ?";
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        stmt.setString(1, authors_id);
+        
+        // Recebe o resultado da consulta SQL
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Authors> lista = new ArrayList<>();
+        
+        // Enquanto existir registros, pega os valores do ReultSet e vai adicionando na lista
+        while(rs.next()) {
+            //  A cada loop, é instanciado um novo objeto, p/ servir de ponte no envio de registros p/ a lista
+            Authors a = new Authors();
+            
+            // "c" -> Registro novo - .setNome recebe o campo do banco de String "nome" 
+            a.setAuthor_id(Integer.valueOf(rs.getString("authors_id")));
+            a.setName(rs.getString("name"));
+            a.setFname(rs.getString("fname"));
+           
+            
+            // Adiciona o registro na lista
+            lista.add(a);            
+        }
+        
+        // Fecha a conexão com o BD
+        rs.close();
+        stmt.close();
+        
+        // Retorna a lista de registros, gerados pela consulta
+        return lista;          
+    }
+    
+     public List<Authors> getListaPorNome(String name) throws SQLException{
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "SELECT * FROM Authors WHERE name = ?";
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        stmt.setString(1, name);
+        
+        // Recebe o resultado da consulta SQL
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Authors> lista = new ArrayList<>();
+        
+        // Enquanto existir registros, pega os valores do ReultSet e vai adicionando na lista
+        while(rs.next()) {
+            //  A cada loop, é instanciado um novo objeto, p/ servir de ponte no envio de registros p/ a lista
+            Authors a = new Authors();
+            
+            // "c" -> Registro novo - .setNome recebe o campo do banco de String "nome" 
+            a.setAuthor_id(Integer.valueOf(rs.getString("authors_id")));
+            a.setName(rs.getString("name"));
+            a.setFname(rs.getString("fname"));
+           
+            
+            // Adiciona o registro na lista
+            lista.add(a);            
+        }
+        
+        // Fecha a conexão com o BD
+        rs.close();
+        stmt.close();
+        
+        // Retorna a lista de registros, gerados pela consulta
+        return lista;          
+    }
+     
+     
+    public List<Authors> getListaPorFNome(String fname) throws SQLException{
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "SELECT * FROM Authors WHERE fname = ?";
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        stmt.setString(1, fname);
+        
+        // Recebe o resultado da consulta SQL
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Authors> lista = new ArrayList<>();
+        
+        // Enquanto existir registros, pega os valores do ReultSet e vai adicionando na lista
+        while(rs.next()) {
+            //  A cada loop, é instanciado um novo objeto, p/ servir de ponte no envio de registros p/ a lista
+            Authors a = new Authors();
+            
+            // "c" -> Registro novo - .setNome recebe o campo do banco de String "nome" 
+            a.setAuthor_id(Integer.valueOf(rs.getString("authors_id")));
+            a.setName(rs.getString("name"));
+            a.setFname(rs.getString("fname"));
+           
+            
+            // Adiciona o registro na lista
+            lista.add(a);            
+        }
+        
+        // Fecha a conexão com o BD
+        rs.close();
+        stmt.close();
+        
+        // Retorna a lista de registros, gerados pela consulta
+        return lista;          
+    } 
+    
+    
+    // DELETE - Apaga registros
+    public void removePorId(int id) throws SQLException {       
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "DELETE FROM Authors WHERE author_id = ?";
+        // stmt recebe o comando SQL
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        
+        // Seta o valor do ID p/ a condição de verificação SQL, dentro do stmt
+        stmt.setInt(1, id);
+        
+        // Executa o codigo SQL, e fecha
+        stmt.execute();
+        stmt.close();        
+    }
+    
+ public void removePorNome(String nome) throws SQLException {       
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "DELETE FROM Authors WHERE name = ?";
+        // stmt recebe o comando SQL
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        
+        // Seta o valor do ID p/ a condição de verificação SQL, dentro do stmt
+        stmt.setString(1, nome);
+        
+        // Executa o codigo SQL, e fecha
+        stmt.execute();
+        stmt.close();        
+    }
+}
