@@ -1,0 +1,114 @@
+package Conexao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Booksauthors;
+
+
+public class BDBooksauthors {
+      private Connection con;
+    
+    // Estabelece uma conexão
+    public BDBooksauthors() throws SQLException {       
+        this.con = ConexaoBD.getConexao();
+    }
+    
+    public void adicionaBook(Booksauthors ba) throws SQLException {
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "INSERT INTO Booksauthors (isbn, author_id, seq_no)"
+                + "VALUES(?, ?, ?)";       
+        PreparedStatement stmt;
+        // stmt recebe o comando SQL
+        stmt = this.con.prepareStatement(sql);
+        
+        // Seta os valores p/ o stmt, substituindo os "?"
+        stmt.setString(1, String.valueOf(ba.getIsbn()));
+        stmt.setString(2,String.valueOf( ba.getAuthor_id()));
+        stmt.setString(3, String.valueOf(ba.getSeq_no()));
+        
+        
+         
+        
+        // O stmt executa o comando SQL no BD, e fecha a conexão
+        stmt.execute();
+        stmt.close();
+        
+    }
+    
+    // SELECT - Retorna uma lista com o resultado da consulta
+    public List<Booksauthors> getLista(String seq_no) throws SQLException{
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "SELECT * FROM Booksauthors WHERE seq_no = ?";
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        stmt.setString(1, seq_no);
+        
+        // Recebe o resultado da consulta SQL
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Booksauthors> lista = new ArrayList<>();
+        
+        // Enquanto existir registros, pega os valores do ReultSet e vai adicionando na lista
+        while(rs.next()) {
+            //  A cada loop, é instanciado um novo objeto, p/ servir de ponte no envio de registros p/ a lista
+            Booksauthors ba = new Booksauthors();
+            
+            // "c" -> Registro novo - .setNome recebe o campo do banco de String "nome" 
+            ba.setIsbn(Integer.valueOf(rs.getString("isbn")));
+            ba.setAuthor_id(Integer.valueOf(rs.getString("author_id")));
+            ba.setSeq_no(Integer.valueOf(rs.getString("seq_no")));
+            
+            
+            // Adiciona o registro na lista
+            lista.add(ba);            
+        }
+        
+        // Fecha a conexão com o BD
+        rs.close();
+        stmt.close();
+        
+        // Retorna a lista de registros, gerados pela consulta
+        return lista;          
+    }
+    
+    // UPDATE - Atualiza registros
+    public void altera(Booksauthors ba) throws SQLException {
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "UPDATE Booksauthors set  seq_no = ?"
+                + "WHERE isbn = ?";
+        // stmt recebe o comando SQL
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        
+        // Seta os valores p/ o stmt, substituindo os "?"        
+        stmt.setString(1, String.valueOf(ba.getAuthor_id()));
+        stmt.setString(2,String.valueOf( ba.getSeq_no()));
+        
+        // Usa o ID como parâmetro de comparação no SQL
+        stmt.setInt(3, ba.getIsbn());
+        
+        // O stmt executa o comando SQL no BD, e fecha a conexão
+        stmt.execute();
+        stmt.close();
+    }
+    
+    
+    
+    // DELETE - Apaga registros
+    public void removeBooks(int isbn) throws SQLException {       
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "DELETE FROM Booksauthors WHERE seq_no = ?";
+        // stmt recebe o comando SQL
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        
+        // Seta o valor do ID p/ a condição de verificação SQL, dentro do stmt
+        stmt.setInt(1, isbn);
+        
+        // Executa o codigo SQL, e fecha
+        stmt.execute();
+        stmt.close();
+        
+    }
+}
