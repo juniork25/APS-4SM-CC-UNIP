@@ -1,0 +1,117 @@
+package Conexao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Books;
+
+
+public class BDBooks {
+    
+     private Connection con;
+    
+    // Estabelece uma conexão
+    public BDBooks() throws SQLException {       
+        this.con = ConexaoBD.getConexao();
+    }
+    
+    public void adicionaBook(Books b) throws SQLException {
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "INSERT INTO Books(title, isbn, default, price)"
+                + "VALUES(?, ?, ?, ?, ?)";       
+        PreparedStatement stmt;
+        // stmt recebe o comando SQL
+        stmt = this.con.prepareStatement(sql);
+        
+        // Seta os valores p/ o stmt, substituindo os "?"
+        stmt.setString(1, b.getTitle());
+        stmt.setString(2,String.valueOf( b.getIsbn()));
+        stmt.setString(3, String.valueOf(b.getPublisher_id()));
+        stmt.setString(4, String.valueOf(b.getPrice()));
+        
+         
+        
+        // O stmt executa o comando SQL no BD, e fecha a conexão
+        stmt.execute();
+        stmt.close();
+        
+    }
+    
+    // SELECT - Retorna uma lista com o resultado da consulta
+    public List<Books> getLista(String titulo) throws SQLException{
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "SELECT * FROM Books WHERE title like ?";
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        stmt.setString(1, titulo);
+        
+        // Recebe o resultado da consulta SQL
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Books> lista = new ArrayList<>();
+        
+        // Enquanto existir registros, pega os valores do ReultSet e vai adicionando na lista
+        while(rs.next()) {
+            //  A cada loop, é instanciado um novo objeto, p/ servir de ponte no envio de registros p/ a lista
+            Books b = new Books();
+            
+            // "c" -> Registro novo - .setNome recebe o campo do banco de String "nome" 
+            b.setTitle(rs.getString("title"));
+            b.setIsbn(Integer.valueOf(rs.getString("isbn")));
+            b.setPublisher_id(Integer.valueOf(rs.getString("publisher_id")));
+            b.setPrice(Byte.valueOf(rs.getString("price")));
+            
+            // Adiciona o registro na lista
+            lista.add(b);            
+        }
+        
+        // Fecha a conexão com o BD
+        rs.close();
+        stmt.close();
+        
+        // Retorna a lista de registros, gerados pela consulta
+        return lista;          
+    }
+    
+    // UPDATE - Atualiza registros
+    public void altera(Books b) throws SQLException {
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "UPDATE Books set title=?, publisher_id=?, price=?"
+                + "WHERE isbn=?";
+        // stmt recebe o comando SQL
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        
+        // Seta os valores p/ o stmt, substituindo os "?"        
+        stmt.setString(1, b.getTitle());
+        stmt.setString(2,String.valueOf( b.getIsbn()));
+        stmt.setString(3, String.valueOf(b.getPublisher_id()));
+        stmt.setString(4, String.valueOf(b.getPrice()));
+        
+        // Usa o ID como parâmetro de comparação no SQL
+        stmt.setInt(6, b.getIsbn());
+        
+        // O stmt executa o comando SQL no BD, e fecha a conexão
+        stmt.execute();
+        stmt.close();
+    }
+    
+    
+    
+    // DELETE - Apaga registros
+    public void removeBooks(int isbn) throws SQLException {       
+        // Prepara conexão p/ receber o comando SQL
+        String sql = "DELETE FROM Books WHERE isbn = ?";
+        // stmt recebe o comando SQL
+        PreparedStatement stmt = this.con.prepareStatement(sql);
+        
+        // Seta o valor do ID p/ a condição de verificação SQL, dentro do stmt
+        stmt.setInt(1, isbn);
+        
+        // Executa o codigo SQL, e fecha
+        stmt.execute();
+        stmt.close();
+        
+    }
+}
