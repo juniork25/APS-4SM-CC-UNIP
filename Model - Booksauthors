@@ -1,0 +1,42 @@
+package model;
+
+public class Booksauthors {
+   
+    private int isbn;
+    private int author_id;
+    private int seq_no;
+
+    public Booksauthors(int isbn, int author_id, int seq_no) {
+        this.isbn = isbn;
+        this.author_id = author_id;
+        this.seq_no = seq_no;
+    }
+
+    public Booksauthors() {
+    }
+
+    public int getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(int isbn) {
+        this.isbn = isbn;
+    }
+
+    public int getAuthor_id() {
+        return author_id;
+    }
+
+    public void setAuthor_id(int author_id) {
+        this.author_id = author_id;
+    }
+
+    public int getSeq_no() {
+        return seq_no;
+    }
+
+    public void setSeq_no(int seq_no) {
+        this.seq_no= seq_no;
+    }
+
+}
