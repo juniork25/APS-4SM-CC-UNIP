@@ -55,7 +55,7 @@ public class BdLivro {
     // SELECT - Retorna uma lista com o resultado da consulta
     public List<Book> getLista(String nome) throws SQLException{
         // Prepara conexão p/ receber o comando SQL
-        String sql = "SELECT * FROM livro WHERE exemplar like ?";
+        String sql = "SELECT * FROM books WHERE nome like ?";
         PreparedStatement stmt = this.conexao.prepareStatement(sql);
         stmt.setString(1, nome);
         
@@ -92,8 +92,8 @@ public class BdLivro {
     // UPDATE - Atualiza registros
     public void altera(Book l) throws SQLException {
         // Prepara conexão p/ receber o comando SQL
-        String sql = "UPDATE livro set exemplar=?, autor=?, edicao=?, ano=?, disponibilidade=?"
-                + "WHERE id_livro=?";
+        String sql = "UPDATE book set name=?, author=?, publisher=?, isbn=?, preco=?"
+                + "WHERE id_book=?";
         // stmt recebe o comando SQL
         PreparedStatement stmt = this.conexao.prepareStatement(sql);
         
@@ -112,10 +112,10 @@ public class BdLivro {
     }
     
     // UPDATE - Altera a disponibilidade do livro
-    public void alteraDisponibilidadeLivro(Book l) throws SQLException {
+    public void alteraPrecoBook(Book l) throws SQLException {
         // Prepara conexão p/ receber o comando SQL
-        String sql = "UPDATE livro set disponibilidade=?"
-                + "WHERE id_livro=?";
+        String sql = "UPDATE book set preco=?"
+                + "WHERE id_book=?";
         // stmt recebe o comando SQL
         PreparedStatement stmt = this.conexao.prepareStatement(sql);
         
@@ -132,7 +132,7 @@ public class BdLivro {
     // DELETE - Apaga registros
     public void remove(int id) throws SQLException {       
         // Prepara conexão p/ receber o comando SQL
-        String sql = "DELETE FROM livro WHERE id_livro=?";
+        String sql = "DELETE FROM book WHERE id_book=?";
         // stmt recebe o comando SQL
         PreparedStatement stmt = this.conexao.prepareStatement(sql);
         

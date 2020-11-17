@@ -59,8 +59,8 @@ public class JFBook extends javax.swing.JFrame {
         jTPesquisar = new javax.swing.JTextField();
         jBPesquisar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTablePesquisa = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
+        jTablePesquisa = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jBExcluir = new javax.swing.JButton();
         jBAlterar = new javax.swing.JButton();
@@ -157,15 +157,14 @@ public class JFBook extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Nome:");
+
         jTablePesquisa.setModel(tmLivro);
         jTablePesquisa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTablePesquisaMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTablePesquisa);
-
-        jLabel8.setText("Nome:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -182,6 +181,11 @@ public class JFBook extends javax.swing.JFrame {
                         .addGap(49, 49, 49)
                         .addComponent(jBPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jTablePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,6 +197,11 @@ public class JFBook extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jTablePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -420,7 +429,7 @@ public class JFBook extends javax.swing.JFrame {
     // MÉTODOS:
     
     // Edita os campos e colunas da tabela de resultados
-    DefaultTableModel tmLivro = new DefaultTableModel(null, new String[]{"Id", "Exemplar", "Autor", "Edição", "Ano", "Disponibilidade"});
+    DefaultTableModel tmLivro = new DefaultTableModel(null, new String[]{"Id", "Nome", "Autor", "Editora", "ISBN", "Preço"});
     List<Book> livros;
     
     // Lista a quantidade de resultado, de acordo com o nome passado no campo pesquisa
