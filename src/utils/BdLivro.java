@@ -11,12 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Livro;
+import model.Book;
 
-/**
- *
- * @author paulojp
- */
+
 public class BdLivro {
     
     /* ----CONEXÃO COM O BD-> */
@@ -34,20 +31,20 @@ public class BdLivro {
     /* ----LIVRO-> */
     
     // CREATE - Adiciona um registro
-    public void adicionaLivro(Livro l) throws SQLException {
+    public void adicionaLivro(Book l) throws SQLException {
         // Prepara conexão p/ receber o comando SQL
-        String sql = "INSERT INTO livro(exemplar, autor, edicao, ano, disponibilidade)"
+        String sql = "INSERT INTO livro(name, author, publisher, ano, disponibilidade)"
                 + "VALUES(?, ?, ?, ?, ?)";       
         PreparedStatement stmt;
         // stmt recebe o comando SQL
         stmt = this.conexao.prepareStatement(sql);
         
         // Seta os valores p/ o stmt, substituindo os "?"
-        stmt.setString(1, l.getExemplar());
-        stmt.setString(2, l.getAutor());
-        stmt.setString(3, String.valueOf(l.getEdicao()));
-        stmt.setString(4, String.valueOf(l.getAno()));
-        stmt.setString(5, l.getDisponibilidade());
+        stmt.setString(1, l.getNome());
+        stmt.setString(2, l.getAuthor());
+        stmt.setString(3, String.valueOf(l.getPublisher()));
+        stmt.setString(4, String.valueOf(l.getIsbn()));
+        stmt.setDouble(5, l.getPreco());
         
         // O stmt executa o comando SQL no BD, e fecha a conexão
         stmt.execute();
@@ -56,29 +53,29 @@ public class BdLivro {
     }
     
     // SELECT - Retorna uma lista com o resultado da consulta
-    public List<Livro> getLista(String exemplar) throws SQLException{
+    public List<Book> getLista(String nome) throws SQLException{
         // Prepara conexão p/ receber o comando SQL
         String sql = "SELECT * FROM livro WHERE exemplar like ?";
         PreparedStatement stmt = this.conexao.prepareStatement(sql);
-        stmt.setString(1, exemplar);
+        stmt.setString(1, nome);
         
         // Recebe o resultado da consulta SQL
         ResultSet rs = stmt.executeQuery();
         
-        List<Livro> lista = new ArrayList<>();
+        List<Book> lista = new ArrayList<>();
         
         // Enquanto existir registros, pega os valores do ReultSet e vai adicionando na lista
         while(rs.next()) {
             //  A cada loop, é instanciado um novo objeto, p/ servir de ponte no envio de registros p/ a lista
-            Livro l = new Livro();
+            Book l = new Book();
             
             // "c" -> Registro novo - .setNome recebe o campo do banco de String "nome" 
             l.setId(Integer.valueOf(rs.getString("id_livro")));
-            l.setExemplar(rs.getString("exemplar"));
-            l.setAutor(rs.getString("autor"));
-            l.setEdicao(Byte.valueOf(rs.getString("edicao")));
-            l.setAno(Short.valueOf(rs.getString("ano")));
-            l.setDisponibilidade(rs.getString("disponibilidade"));
+            l.setNome(rs.getString("nome"));
+            l.setAuthor(rs.getString("author"));
+            l.setPublisher(rs.getString("publisher"));
+            l.setIsbn(rs.getString("isbn"));
+            l.setPreco(Double.valueOf(rs.getString("preco")));
             
             // Adiciona o registro na lista
             lista.add(l);            
@@ -93,7 +90,7 @@ public class BdLivro {
     }
     
     // UPDATE - Atualiza registros
-    public void altera(Livro l) throws SQLException {
+    public void altera(Book l) throws SQLException {
         // Prepara conexão p/ receber o comando SQL
         String sql = "UPDATE livro set exemplar=?, autor=?, edicao=?, ano=?, disponibilidade=?"
                 + "WHERE id_livro=?";
@@ -101,11 +98,11 @@ public class BdLivro {
         PreparedStatement stmt = this.conexao.prepareStatement(sql);
         
         // Seta os valores p/ o stmt, substituindo os "?"        
-        stmt.setString(1, l.getExemplar());
-        stmt.setString(2, l.getAutor());
-        stmt.setString(3, String.valueOf(l.getEdicao()));
-        stmt.setString(4, String.valueOf(l.getAno()));
-        stmt.setString(5, l.getDisponibilidade());
+        stmt.setString(1, l.getNome());
+        stmt.setString(2, l.getAuthor());
+        stmt.setString(2, l.getPublisher());
+        stmt.setString(2, l.getIsbn());
+        stmt.setString(4, String.valueOf(l.getPreco()));
         // Usa o ID como parâmetro de comparação no SQL
         stmt.setInt(6, l.getId());
         
@@ -115,7 +112,7 @@ public class BdLivro {
     }
     
     // UPDATE - Altera a disponibilidade do livro
-    public void alteraDisponibilidadeLivro(Livro l) throws SQLException {
+    public void alteraDisponibilidadeLivro(Book l) throws SQLException {
         // Prepara conexão p/ receber o comando SQL
         String sql = "UPDATE livro set disponibilidade=?"
                 + "WHERE id_livro=?";
@@ -123,7 +120,7 @@ public class BdLivro {
         PreparedStatement stmt = this.conexao.prepareStatement(sql);
         
         // Seta os valores p/ o stmt, substituindo os "?"  
-        stmt.setString(1, l.getDisponibilidade());
+        stmt.setDouble(1, l.getPreco());
         // Usa o ID como parâmetro de comparação no SQL
         stmt.setInt(2, l.getId());
         

@@ -5,6 +5,7 @@
  */
 package view;
 
+
 public class JFPrincipal extends javax.swing.JFrame {
 
     /**
@@ -85,7 +86,7 @@ public class JFPrincipal extends javax.swing.JFrame {
     private void jMLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMLivroActionPerformed
         
         // Abre a janela
-        new JFLivro(this).setVisible(true);
+        new JFBook(this).setVisible(true);
         
         this.setEnabled(false);
         

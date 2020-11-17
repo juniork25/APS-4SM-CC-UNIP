@@ -7,10 +7,7 @@ package view;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-/**
- *
- * @author paulojp
- */
+
 public class Biblioteca {
 
     /**
